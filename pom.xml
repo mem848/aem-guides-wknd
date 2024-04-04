@@ -57,7 +57,7 @@
         <aem.sdk.api>2022.2.6276.20220205T222203Z-220100</aem.sdk.api>
         <aemanalyser.version>1.3.0</aemanalyser.version>
         <componentGroupName>WKND Sites Project</componentGroupName>
-        <core.wcm.components.version>2.18.0</core.wcm.components.version>
+        <core.wcm.components.version>2.23.4</core.wcm.components.version>
         <uber.jar.version>6.5.10</uber.jar.version>
     </properties>
 
@@ -566,6 +566,34 @@ Bundle-DocURL:
                 </pluginManagement>
             </build>
         </profile>
+
+        <profile>
+            <id>autoInstallSinglePackage</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.day.jcr.vault</groupId>
+                        <artifactId>content-package-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>install-package</id>
+                                <goals>
+                                    <goal>install</goal>
+                                </goals>
+                                <configuration>
+                                    <targetURL>http://${aem.host}:${aem.port}/crx/packmgr/service.jsp</targetURL>
+                                    <failOnError>true</failOnError>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     </profiles>
 
 
@@ -624,6 +652,12 @@ Bundle-DocURL:
                 <artifactId>junit-addons</artifactId>
                 <version>1.4</version>
                 <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>junit</groupId>
+                        <artifactId>junit</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>io.wcm</groupId>
